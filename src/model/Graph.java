@@ -41,9 +41,12 @@ public class Graph{
   public List<Vertex> getVertices(){
     //Eine neue Liste mit allen Vertex-Objekten erstellen.
     List<Vertex> result = new List<Vertex>();
-
+    vertices.toFirst();
     //TODO 01: Einmal Liste kopieren, bitte! Warum eigentlich kopieren? (O_o)
-
+    while(vertices.hasAccess()){
+      result.append(vertices.getContent());
+    }
+    vertices.next();
     //Aktuelles Element zum Anfang bewegen.
     result.toFirst();
 
@@ -57,9 +60,11 @@ public class Graph{
   public List<Edge> getEdges(){
     //Eine neue Liste mit allen Edge-Objekten erstellen.
     List<Edge> result = new List<Edge>();
-
+    edges.toFirst();
     //TODO 02: Und nochmal kopieren.
-
+    while(edges.hasAccess()){
+      result.append(edges.getContent());
+    }
     //Aktuelles Element zum Anfang bewegen.
     result.toFirst();
 
@@ -71,9 +76,14 @@ public class Graph{
    * wird null zurueckgeliefert.
    */
   public Vertex getVertex(String pID){
-
+    vertices.toFirst();
     //TODO 03: Knoten-Objekt finden.
-
+    while(vertices.hasAccess()){
+      if(vertices.getContent().getID().equals(pID)){
+        return vertices.getContent();
+      }
+      vertices.next();
+    }
     return null;
   }
 
@@ -84,6 +94,9 @@ public class Graph{
    */
   public void addVertex(Vertex pVertex){
     //TODO 04: Neues Knoten-Objekt hinzufügen.
+    if(getVertex(pVertex.getID()) != null && pVertex.getID() != null){
+      vertices.append(pVertex);
+    }
   }
 
   /**
