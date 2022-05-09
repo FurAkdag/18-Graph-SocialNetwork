@@ -67,19 +67,22 @@ public class MainController {
     public String[] getAllUsers(){
         //TODO 06: String-Array mit allen Nutzernamen erstellen.
 
-        if(allUsers.getVertices().isEmpty()){
+        if(!allUsers.getVertices().isEmpty()){
             int userNumber = 0;
-            allUsers.getVertices().toFirst();
-            while (allUsers.getVertices().hasAccess()){
+            List<Vertex> allVertex = allUsers.getVertices();
+            allVertex.toFirst();
+            while (allVertex.hasAccess()){
                 userNumber++;
-                allUsers.getVertices().next();
+                allVertex.next();
             }
             String[] userArray = new String[userNumber];
-            allUsers.getVertices().toFirst();
-            for(int i = 0; allUsers.getVertices().hasAccess();i++){
-                userArray[i] = allUsers.getVertices().getContent().getID();
-                allUsers.getVertices().next();
+            allVertex.toFirst();
+            for(int i = 0; allVertex.hasAccess();i++){
+                userArray[i] = allVertex.getContent().getID();
+                allVertex.next();
             }
+
+            return userArray;
         }
         return null;
     }
@@ -100,6 +103,7 @@ public class MainController {
                 neighbours.next();
             }
             String[] neighbourArray = new String[neighbourNumber];
+            neighbours.toFirst();
             for(int i = 0; neighbours.hasAccess();i++){
                 neighbourArray[i] = neighbours.getContent().getID();
                 neighbours.next();
@@ -152,8 +156,7 @@ public class MainController {
     public boolean unfriend(String name01, String name02){
         //TODO 11: Freundschaften beenden.
         if(allUsers.getVertex(name01) != null && allUsers.getVertex(name02) != null && allUsers.getEdge(allUsers.getVertex(name01), allUsers.getVertex(name02)) != null) {
-            Edge edge = new Edge(allUsers.getVertex(name01), allUsers.getVertex(name02), 0);
-            allUsers.removeEdge(edge);
+            allUsers.removeEdge(allUsers.getEdge(allUsers.getVertex(name01), allUsers.getVertex(name02)));
             return true;
         }
         return false;
@@ -177,11 +180,13 @@ public class MainController {
         double vertex = 0;
         double vertexHelp = 0;
         vertexList.toFirst();
+
         while(vertexList.hasAccess()){
             vertex += vertexHelp;
             vertexHelp++;
-            edgeList.next();
+            vertexList.next();
         }
+
         return edges/vertex;
     }
 
@@ -199,6 +204,19 @@ public class MainController {
             //TODO 13: Schreibe einen Algorithmus, der mindestens eine Verbindung von einem Nutzer über Zwischennutzer zu einem anderem Nutzer bestimmt. Happy Kopfzerbrechen!
         }
         return null;
+    }
+
+    public List<String> getLinksBetweenRek(String name01, String name02) {
+        List<String> currentList = new List<>();
+        currentList.append(name01);
+        for(int i = 0; i<getAllFriendsFromUser(name01).length;i++){
+            if(allUsers.getVertex(getAllFriendsFromUser(name01)[i]) == allUsers.getVertex(name02)){
+                currentList.append(name02);
+                return currentList;
+            }else{
+
+            }
+        }
     }
 
     /**
