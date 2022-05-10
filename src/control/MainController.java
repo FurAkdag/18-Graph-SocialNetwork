@@ -202,21 +202,23 @@ public class MainController {
         Vertex user02 = allUsers.getVertex(name02);
         if(user01 != null && user02 != null){
             //TODO 13: Schreibe einen Algorithmus, der mindestens eine Verbindung von einem Nutzer über Zwischennutzer zu einem anderem Nutzer bestimmt. Happy Kopfzerbrechen!
+            return getLinksBetweenRek(name01,name02).split(",");
         }
         return null;
     }
 
-    public List<String> getLinksBetweenRek(String name01, String name02) {
-        List<String> currentList = new List<>();
-        currentList.append(name01);
+    public String getLinksBetweenRek(String name01, String name02) {
         for(int i = 0; i<getAllFriendsFromUser(name01).length;i++){
             if(allUsers.getVertex(getAllFriendsFromUser(name01)[i]) == allUsers.getVertex(name02)){
-                currentList.append(name02);
-                return currentList;
-            }else{
-
+                return name01 + ", " + name02;
             }
         }
+        for(int j = 0;j < getAllFriendsFromUser(name01).length;j++){
+            if(!getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02).equals("")){
+                return name01 + ", " + getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02);
+            }
+        }
+        return "";
     }
 
     /**
