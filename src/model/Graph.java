@@ -95,9 +95,9 @@ public class Graph{
    */
   public void addVertex(Vertex pVertex){
     //TODO 04: Neues Knoten-Objekt hinzufügen.
-    if(getVertex(pVertex.getID()) == null && pVertex.getID() != null){
-      vertices.append(pVertex);
-    }
+      if (pVertex != null && getVertex(pVertex.getID()) == null && pVertex.getID() != null) {
+        vertices.append(pVertex);
+      }
   }
 
   /**

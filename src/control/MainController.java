@@ -39,7 +39,7 @@ public class MainController {
      */
     public boolean insertUser(String name){
         //TODO 05: Nutzer dem sozialen Netzwerk hinzufügen.
-        if(allUsers.getVertex(name) == null){
+        if(name != null && allUsers.getVertex(name) == null){
             allUsers.addVertex(new Vertex(name));
             return true;
         }
@@ -53,7 +53,7 @@ public class MainController {
      */
     public boolean deleteUser(String name){
         //TODO 07: Nutzer aus dem sozialen Netzwerk entfernen.
-        if(allUsers.getVertex(name) != null){
+        if(name != null && allUsers.getVertex(name) != null){
             allUsers.removeVertex(allUsers.getVertex(name));
             return true;
         }
@@ -84,7 +84,7 @@ public class MainController {
 
             return userArray;
         }
-        return null;
+        return new String[0];
     }
 
     /**
@@ -110,7 +110,7 @@ public class MainController {
             }
             return neighbourArray;
         }
-        return null;
+        return new String[0];
     }
 
     /**
@@ -123,8 +123,8 @@ public class MainController {
     public double centralityDegreeOfUser(String name){
         //TODO 10: Prozentsatz der vorhandenen Freundschaften eines Nutzers von allen möglichen Freundschaften des Nutzers.
         if(allUsers.getVertex(name) != null) {
-            double friend = getAllFriendsFromUser(name).length + 1;
-            double user = getAllUsers().length + 1;
+            double friend = getAllFriendsFromUser(name).length;
+            double user = getAllUsers().length - 1;
 
             return friend/user;
         }
@@ -210,12 +210,12 @@ public class MainController {
     public String getLinksBetweenRek(String name01, String name02) {
         for(int i = 0; i<getAllFriendsFromUser(name01).length;i++){
             if(allUsers.getVertex(getAllFriendsFromUser(name01)[i]) == allUsers.getVertex(name02)){
-                return name01 + ", " + name02;
+                return name01 + "," + name02;
             }
         }
         for(int j = 0;j < getAllFriendsFromUser(name01).length;j++){
             if(!getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02).equals("")){
-                return name01 + ", " + getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02);
+                return name01 + "," + getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02);
             }
         }
         return "";
