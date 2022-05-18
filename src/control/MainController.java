@@ -202,6 +202,9 @@ public class MainController {
         Vertex user02 = allUsers.getVertex(name02);
         if(user01 != null && user02 != null){
             //TODO 13: Schreibe einen Algorithmus, der mindestens eine Verbindung von einem Nutzer über Zwischennutzer zu einem anderem Nutzer bestimmt. Happy Kopfzerbrechen!
+            if(getLinksBetweenRek(name01,name02).equals("")){
+                return null;
+            }
             return getLinksBetweenRek(name01,name02).split(",");
         }
         return null;
@@ -213,11 +216,13 @@ public class MainController {
                 return name01 + "," + name02;
             }
         }
+        allUsers.getVertex(name01).setMark(true);
         for(int j = 0;j < getAllFriendsFromUser(name01).length;j++){
-            if(!getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02).equals("")){
+            if(allUsers.getVertex(getAllFriendsFromUser(name01)[j]).isMarked() && !getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02).equals("")){
                 return name01 + "," + getLinksBetweenRek(getAllFriendsFromUser(name01)[j],name02);
             }
         }
+        allUsers.setAllVertexMarks(false);
         return "";
     }
 
@@ -227,7 +232,14 @@ public class MainController {
      */
     public boolean someoneIsLonely(){
         //TODO 14: Schreibe einen Algorithmus, der explizit den von uns benutzten Aufbau der Datenstruktur Graph und ihre angebotenen Methoden so ausnutzt, dass schnell (!) iterativ geprüft werden kann, ob der Graph allUsers keine einsamen Knoten hat. Dies lässt sich mit einer einzigen Schleife prüfen.
-        return false;
+        List<Vertex> allVertices = allUsers.getVertices();
+        while(allVertices.hasAccess()){
+            if(getAllFriendsFromUser(allVertices.getContent().getID()).length == 0){
+                return false;
+            }
+            allVertices.next();
+        }
+        return true;
     }
 
     /**
@@ -237,7 +249,21 @@ public class MainController {
      */
     public boolean testIfConnected(){
         //TODO 15: Schreibe einen Algorithmus, der ausgehend vom ersten Knoten in der Liste aller Knoten versucht, alle anderen Knoten über Kanten zu erreichen und zu markieren.
-        return false;
+        List<Vertex> allVertices = allUsers.getVertices();
+        if(!allVertices.isEmpty()) {
+            Vertex first = allVertices.getContent();
+            allVertices.next();
+            while (allVertices.hasAccess()) {
+                if (getLinksBetween(first.getID(), allVertices.getContent().getID()) == null){
+                    allUsers.setAllVertexMarks(false);
+                    return false;
+                }
+                allUsers.getVertex(allVertices.getContent().getID()).setMark(true);
+                allVertices.next();
+            }
+        }
+        allUsers.setAllVertexMarks(false);
+        return true;
     }
     
     /**
